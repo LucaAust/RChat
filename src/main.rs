@@ -1,6 +1,12 @@
 mod db;
 mod frontend;
+mod ws_handle;
+
 use crate::{frontend::routes::hello, ws_handle::ws_upgrade_handler};
+use axum::{
+    Router,
+    routing::{any, get},
+};
 use db::initialize_database;
 use tower_http::services::ServeDir;
 
@@ -8,10 +14,9 @@ use tower_http::services::ServeDir;
 async fn main() {
     let pool = initialize_database().await;
 
-    let api = Router::new().route("/posts", get(|| async { Json(json!({ "data": 42 })) }));
-
     let app = Router::new()
         .nest_service("/static", ServeDir::new("static"))
+        .route("/ws", any(ws_upgrade_handler))
         .route("/", get(hello))
         .with_state(pool);
 
