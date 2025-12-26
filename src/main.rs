@@ -1,7 +1,7 @@
 mod db;
-use axum::{Json, Router, routing::get};
+use crate::{frontend::routes::hello, ws_handle::ws_upgrade_handler};
 use db::initialize_database;
-use serde_json::json;
+use tower_http::services::ServeDir;
 
 #[tokio::main]
 async fn main() {
@@ -10,8 +10,7 @@ async fn main() {
     let api = Router::new().route("/posts", get(|| async { Json(json!({ "data": 42 })) }));
 
     let app = Router::new()
-        .nest("/api", api)
-        .route("/", get(|| async { "Hello, World!" }))
+        .nest_service("/static", ServeDir::new("static"))
         .with_state(pool);
 
     // run our app with hyper, listening globally on port 3000
