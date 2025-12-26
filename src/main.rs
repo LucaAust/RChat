@@ -1,4 +1,5 @@
 mod db;
+mod frontend;
 use crate::{frontend::routes::hello, ws_handle::ws_upgrade_handler};
 use db::initialize_database;
 use tower_http::services::ServeDir;
@@ -11,6 +12,7 @@ async fn main() {
 
     let app = Router::new()
         .nest_service("/static", ServeDir::new("static"))
+        .route("/", get(hello))
         .with_state(pool);
 
     // run our app with hyper, listening globally on port 3000
