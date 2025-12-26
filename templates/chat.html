@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+
+{% block title %}RChat{% endblock %}
+
+{% block content %}
+  <p>Hello, {{ name }}!</p>
+
+  <hr>
+<div class="row">
+    <div class="col-xs-2" id="users">
+        <h3>Chats</h3>
+        <article>User 1</article>
+        <article>User 2</article>
+        <article>User 3</article>
+        <article>User 4</article>
+    </div>
+    <div class="col-xs">
+        <div class="">
+            <h3>Messages</3>
+        </div>
+
+        <div id="chat"></div>
+
+
+        <div class="row">
+            <form id="send-message-form">
+                <fieldset role="group">
+                    <input name="message" placeholder="Type here.." />
+                    <input type="submit" value="Send" />
+                </fieldset>
+            </form>
+        </div>
+    </div>
+    
+</div>
+
+{% endblock %}
